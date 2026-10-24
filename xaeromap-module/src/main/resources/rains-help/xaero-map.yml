@@ -1,0 +1,62 @@
+id: xaero-map
+title: Xaero's maps
+summary: Separate maps per world, claims drawn on your map, and your homes and warps as waypoints — for Xaero's Minimap and World Map.
+intro: |
+  Using Xaero's Minimap or World Map? Lovely. Then this server can do a few favours for your map — mostly so that the nether stops being scribbled over the overworld.
+icon: FILLED_MAP
+category: Getting around
+order: 30
+module: xaeromap
+aliases: [xaeromap, xaero, minimap, worldmap, map, waypoints, waypoint, opac, claimsmap]
+keywords: [map, minimap, world map, claims, homes, warps, waypoint, nether, refresh, mod, client, open parties and claims]
+commands: [xaeromap]
+related: [homes]
+sections:
+  - question: What does this do for my map?
+    title: What it is
+    text: |
+      It only matters if <i>you</i> run <white>Xaero's Minimap</white> or <white>World Map</white> on your own computer — the server cannot give those to you. If you do, it can:
+      {if:xaeromap:world-ids}<white>•</white> keep a <white>separate map per world</white>;{/if}
+      {if:xaeromap:claims.enabled}<white>•</white> draw <white>claims</white> on your map;{/if}
+      {if:xaeromap:waypoints.enabled}<white>•</white> hand you your <white>homes and warps</white> as waypoints.{/if}
+      Without the mod nothing is sent to you and nothing is lost; the server just says so when you ask.
+  - question: Why does each world have its own map?
+    title: A map per world
+    when: xaeromap:world-ids
+    text: |
+      Left alone, Xaero files every world of a server on one shared map, so the nether is drawn over the overworld and a farm world overwrites your survival map. The server tells your map which world you are in whenever you join or change world, so each one gets its own. Nothing to do on your side.
+  - question: How do claims show on my map?
+    title: Claims on the map
+    when: xaeromap:claims.enabled
+    text: |
+      Claimed land is drawn as coloured chunks with the claim's name. For this you need <white>Open Parties and Claims</white> installed next to Xaero's map — that is the mod that reads this kind of data; without it you simply see no claims.
+      Your own claims are drawn <white>{setting:xaeromap:claims.colour.own}</white>, claims you are trusted on <white>{setting:xaeromap:claims.colour.shared}</white>, and everybody else's get a colour taken from their owner, so two neighbours never melt into one blob.
+      {if:xaeromap:claims.shown-to == everybody}Every claim on the server is shown to everybody — you learn that by walking around anyway.{else}You only see your own claims and the ones you are trusted on; other people's land stays off your map.{/if}
+      The map only <i>shows</i> claims. You cannot claim land from the mod's own buttons; claim the normal way.
+  - question: How often does it update?
+    title: Refreshing
+    when: xaeromap:claims.enabled
+    text: |
+      The server checks every {setting:xaeromap:claims.refresh-seconds|seconds} for claims that were made, resized, renamed or deleted, and sends only what changed. A big change (say, hundreds of chunks at once) arrives over a few refreshes, so nobody is flooded off the server.
+      If your map looks wrong, type {run:/xaeromap} (or {run:/xaeromap refresh}): it sends your world and claims again from scratch. If nothing on your client answers, it tells you — that means no map mod, or one that does not read this data.
+  - question: How do I get my homes on my map?
+    title: Homes as waypoints
+    when: xaeromap:waypoints.enabled
+    text: |
+      Type {run:/xaeromap homes}. You get one chat line per home, each a button your Xaero client turns into "add this waypoint" — one click each. Homes are drawn {setting:xaeromap:waypoints.colour.home}. Only your own homes, only those in worlds that are loaded and on this server.
+      It is an offer, not automatic, so you decide what clutters your map.
+  - question: And the warps?
+    title: Warps as waypoints
+    when: xaeromap:waypoints.enabled
+    text: |
+      {run:/xaeromap warps} does the same for warps, coloured {setting:xaeromap:waypoints.colour.warp}. You are only offered the ones you may actually use — a warp you may not enter is a warp whose coordinates you do not get.
+  - question: Why does it say nothing answered?
+    title: "Nothing answered"
+    text: |
+      Your client did not reply to the server's question, so either Xaero's map is not installed, or an old version does not know the data. Install or update it and rejoin; a mod installed mid-session registers late, so {run:/xaeromap} asks again. For claims you also need Open Parties and Claims.
+  - question: How do I check it as staff?
+    title: Staff tools
+    permission: rainsxaeromap.xaeromap.admin
+    text: |
+      {cmd:/xaeromap status} shows what the server tells map mods: per-world maps and claims on/off, the claim source, who sees what, how many claims and chunks are mapped, and how many online players really have a map mod that reads this data — the one fact that separates "broken" from "nobody has the mod". {cmd:/xaeromap resync} sends everybody's map again.
+      Settings are under {run:/settings} → Xaero's Map support: per-world maps {setting:xaeromap:world-ids|onoff}, claims {setting:xaeromap:claims.enabled|onoff} (shown to {setting:xaeromap:claims.shown-to}, chunk counts from {setting:xaeromap:claims.chunk-coverage-percent|percent} coverage, up to {setting:xaeromap:claims.chunks-per-refresh|count} chunk changes per refresh), waypoints {setting:xaeromap:waypoints.enabled|onoff}.
