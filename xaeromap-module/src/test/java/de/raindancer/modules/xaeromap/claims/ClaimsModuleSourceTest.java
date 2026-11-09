@@ -62,6 +62,20 @@ class ClaimsModuleSourceTest {
     }
 
     @Test
+    @DisplayName("a claim the server holds has no owner, and is drawn as Open Parties and Claims' server claim")
+    void serverClaimsAreTheServers() {
+        Claim spawn = new Claim(UUID.randomUUID(), "Spawn", WORLD, "world",
+                ClaimShape.rectangle(0, 0, 15, 15, 0, 255), null);
+        registry.add(spawn);
+        Mockito.when(services.names().primaryOwner(spawn)).thenReturn("Server");
+
+        ClaimFacts fact = onlyFact();
+
+        assertThat(fact.owner()).isEqualTo(ClaimsModuleSource.SERVER_OWNER);
+        assertThat(fact.ownerName()).isEqualTo("Server");
+    }
+
+    @Test
     @DisplayName("a claim of exactly one chunk covers exactly that chunk, fully")
     void oneChunkIsOneChunk() {
         claimOf("Home", ClaimShape.rectangle(0, 0, 15, 15, 0, 255));

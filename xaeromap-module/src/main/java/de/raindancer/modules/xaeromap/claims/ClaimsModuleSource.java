@@ -58,6 +58,9 @@ public final class ClaimsModuleSource implements ClaimSource {
         this.server = server;
     }
 
+    /** Who owns a server claim on the wire: Open Parties and Claims' own id for the server. */
+    public static final UUID SERVER_OWNER = new UUID(0L, 0L);
+
     @Override
     public String name() {
         return "claims-module (" + claims.claims().size() + " claim(s))";
@@ -79,8 +82,12 @@ public final class ClaimsModuleSource implements ClaimSource {
                 // does, rather than being forgotten.
                 continue;
             }
-            facts.add(new ClaimFacts(claim.id(), claim.name(), claim.primaryOwner(),
-                    claims.names().nameOfOwner(claim.primaryOwner()), claim.members().keySet(),
+            // A claim the server holds (claims 2.25.0) has no owner at all; the client knows the nil uuid as the
+            // server's, and names it from the claims module ("Server").
+            UUID owner = claim.primaryOwner();
+            facts.add(new ClaimFacts(claim.id(), claim.name(), owner == null ? SERVER_OWNER : owner,
+                    owner == null ? claims.names().primaryOwner(claim) : claims.names().nameOfOwner(owner),
+                    claim.members().keySet(),
                     claim.worldId(), dimension, claim.createdAt(),
                     coverageOf(claim, dimension)));
         }
