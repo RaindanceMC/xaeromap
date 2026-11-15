@@ -43,7 +43,7 @@ public final class ClaimIntegration {
                     : server.getServicesManager().load(ClaimServices.class);
             if (claims == null) {
                 if (log != null) {
-                    log.info("No claims plugin is registered, so nothing is drawn on the map yet — "
+                    log.info("No claims plugin is registered, so nothing is drawn on the map yet. "
                             + "every world still gets its own map.");
                 }
                 return ClaimSource.NONE;

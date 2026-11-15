@@ -60,8 +60,8 @@ public record XaeroMapSettings(
         int refreshSeconds,
 
         @In("xaeromap.claims") @Title("Chunks sent per refresh") @Range(min = 16, max = 8192)
-        @Describe("The most chunk changes one player is sent in one refresh. A budget rather than a "
-                + "limit: whatever is left over goes out on the next one, so pasting in a thousand "
+        @Describe("The most chunk changes one player is sent in one refresh. Whatever is left "
+                + "over goes out on the next one, so pasting in a thousand "
                 + "claims at once cannot flood anybody off the server.")
         @Key("claims.chunks-per-refresh")
         int chunksPerRefresh,
